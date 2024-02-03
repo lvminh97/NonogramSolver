@@ -1,4 +1,4 @@
-package com.example.nonogram_solver
+package com.minhlv.nonogram_solver
 
 import io.flutter.embedding.android.FlutterActivity
 
