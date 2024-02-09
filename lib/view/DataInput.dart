@@ -15,7 +15,11 @@ class DataInput extends StatefulWidget {
 
 class DataInputState extends State<StatefulWidget> {
 
-  int type = 0;   // 0 - 5x5, 1 - 10x10, 2 - 15x15
+  int size = 0;// 0 - row, 1 - col
+  int pos = 0;
+  String content = "";
+  List<String> data = [];
+  bool firstInit = true;
 
   @override
   void initState() {
@@ -24,6 +28,16 @@ class DataInputState extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if(firstInit) {
+      final args = ModalRoute.of(context)!.settings.arguments as Map;
+      size = [5, 10, 15][args["type"] ?? 0];
+      for(int i = 0; i < size; i++) {
+        data.add("");
+        data.add("");
+      }
+      firstInit = false;
+    }
+
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -50,92 +64,44 @@ class DataInputState extends State<StatefulWidget> {
                   ),
                 ),
                 SizedBox(height: 5.h),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 28.w,
-                      height: 6.h,
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            type = 0;
-                          });
-                        },
-                        style: TextButton.styleFrom(
-                          side: BorderSide(
-                            color: type == 0 ? Colors.blue : Colors.grey,
-                            width: type == 0 ? 2 : 1.2
-                          )
-                        ),
-                        child: Text(
-                          "5x5",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.sp
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 3.w),
-                    SizedBox(
-                      width: 28.w,
-                      height: 6.h,
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            type = 1;
-                          });
-                        },
-                        style: TextButton.styleFrom(
-                          side: BorderSide(
-                            color: type == 1 ? Colors.blue : Colors.grey,
-                            width: type == 1 ? 2 : 1.2
-                          )
-                        ),
-                        child: Text(
-                          "10x10",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.sp
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 3.w),
-                    SizedBox(
-                      width: 28.w,
-                      height: 6.h,
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            type = 2;
-                          });
-                        },
-                        style: TextButton.styleFrom(
-                          side: BorderSide(
-                            color: type == 2 ? Colors.blue : Colors.grey,
-                            width: type == 2 ? 2 : 1.2
-                          )
-                        ),
-                        child: Text(
-                          "15x15",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.sp
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                Text(
+                  "${pos < size ? "Row" : "Col"} ${pos < size ? (pos + 1) : (pos - size + 1)}/$size",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14.sp
+                  ),
                 ),
-                SizedBox(height: 10.h),
+                SizedBox(height: 3.h),
+                Container(
+                  width: 90.w,
+                  height: 6.h,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.5
+                    ),
+                    borderRadius: BorderRadius.circular(2.w)
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    content,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5.h),
                 SizedBox(
                   width: 80.w,
                   height: 6.5.h,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(context, "/param_input", (route) => false, arguments: {
-                        "type": type
+                      data[pos] = content;
+                      Navigator.pushNamedAndRemoveUntil(context, "/result", (route) => false, arguments: {
+                        "size": size,
+                        "data": data
                       });
                     },
                     style: TextButton.styleFrom(
@@ -145,14 +111,377 @@ class DataInputState extends State<StatefulWidget> {
                       )
                     ),
                     child: Text(
-                      "Continue",
+                      "Get the result",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14.sp
                       ),
                     ),
                   ),
-                )
+                ),
+                SizedBox(height: 8.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "1";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2.w)
+                          )
+                        ),
+                        child: Text(
+                          "1",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "2";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2.w)
+                          )
+                        ),
+                        child: Text(
+                          "2",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "3";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2.w)
+                          )
+                        ),
+                        child: Text(
+                          "3",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 1.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "4";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Text(
+                          "4",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "5";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Text(
+                          "5",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "6";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Text(
+                          "6",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 1.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "7";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Text(
+                          "7",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "8";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Text(
+                          "8",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += "9";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Text(
+                          "9",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 1.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          if(pos > 0) {
+                            data[pos] = content;
+                            pos--;
+                            content = data[pos];
+                            setState(() {});
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Icon(
+                          Icons.arrow_upward,
+                          color: Colors.white,
+                          size: 14.sp
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content += " ";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Icon(
+                          Icons.space_bar,
+                          color: Colors.white,
+                          size: 14.sp
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 25.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          if(pos + 1 < 2 * size) {
+                            data[pos] = content;
+                            pos++;
+                            content = data[pos];
+                            setState(() {});
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Icon(
+                          Icons.arrow_downward,
+                          color: Colors.white,
+                          size: 14.sp
+                        )
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 1.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 38.5.w,
+                      height: 6.h,
+                      child: TextButton(
+                        onPressed: () {
+                          content = "";
+                          setState(() {});
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(2.w)
+                            )
+                        ),
+                        child: Text(
+                          "Clear",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    SizedBox(
+                      width: 38.5.w,
+                      height: 6.h,
+                      child: TextButton(
+                          onPressed: () {
+                            if(content.isNotEmpty) {
+                              content = content.substring(0, content.length - 1);
+                            }
+                            setState(() {});
+                          },
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(2.w)
+                              )
+                          ),
+                          child: Icon(
+                              Icons.backspace,
+                              color: Colors.white,
+                              size: 14.sp
+                          )
+                      ),
+                    ),
+                  ],
+                ),
               ],
             )
           ),
