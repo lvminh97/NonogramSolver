@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:nonogram_solver/routes.dart';
 import 'package:sizer/sizer.dart';
 
 class SizeInput extends StatefulWidget {
@@ -131,7 +132,7 @@ class SizeInputState extends State<StatefulWidget> {
                   height: 6.5.h,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(context, "/data_input", (route) => false, arguments: {
+                      Navigator.pushNamedAndRemoveUntil(context, RoutesName.dataInput, (route) => false, arguments: {
                         "type": type
                       });
                     },

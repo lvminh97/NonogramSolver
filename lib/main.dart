@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
-        initialRoute: "/splash",
+        initialRoute: MyRoutes.getInit(),
         routes: MyRoutes.getRoutes(),
       ),
     );

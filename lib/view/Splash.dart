@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:nonogram_solver/routes.dart';
 import 'package:sizer/sizer.dart';
 
 class Splash extends StatefulWidget {
@@ -23,7 +24,7 @@ class SplashState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamedAndRemoveUntil(context, "/size_input", (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, RoutesName.sizeInput, (route) => false);
     });
     return PopScope(
       canPop: false,

@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:nonogram_solver/routes.dart';
 import 'package:sizer/sizer.dart';
 
 class DataInput extends StatefulWidget {
@@ -41,7 +42,7 @@ class DataInputState extends State<StatefulWidget> {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
-        Navigator.pushNamedAndRemoveUntil(context, "/size_input", (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, RoutesName.sizeInput, (route) => false);
       },
       child: Scaffold(
         body: DecoratedBox(
@@ -99,7 +100,7 @@ class DataInputState extends State<StatefulWidget> {
                   child: TextButton(
                     onPressed: () {
                       data[pos] = content;
-                      Navigator.pushNamedAndRemoveUntil(context, "/result", (route) => false, arguments: {
+                      Navigator.pushNamedAndRemoveUntil(context, RoutesName.result, (route) => false, arguments: {
                         "size": size,
                         "data": data
                       });
