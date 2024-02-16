@@ -36,6 +36,37 @@ class DataInputState extends State<StatefulWidget> {
         data.add("");
         data.add("");
       }
+      // for testing
+      data[0] = "3";
+      data[1] = "2 3 2";
+      data[2] = "5 4";
+      data[3] = "5";
+      data[4] = "1";
+      data[5] = "2 2 3";
+      data[6] = "15";
+      data[7] = "8 1";
+      data[8] = "9 1 1";
+      data[9] = "6 3 1";
+      data[10] = "6 3 1";
+      data[11] = "6 3 2";
+      data[12] = "3";
+      data[13] = "7";
+      data[14] = "15";
+      data[15] = "6 1";
+      data[16] = "1 6 1";
+      data[17] = "2 8 1";
+      data[18] = "2 7 1";
+      data[19] = "1 6 1";
+      data[20] = "1 6 1";
+      data[21] = "3 1";
+      data[22] = "4 1";
+      data[23] = "2 1 2";
+      data[24] = "2 1 3 2";
+      data[25] = "2 1 1 3 2";
+      data[26] = "4 2 3 2";
+      data[27] = "2 2 1 3";
+      data[28] = "3 2 4";
+      data[29] = "3 9";
       firstInit = false;
     }
 
